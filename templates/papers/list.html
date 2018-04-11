@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>Papers List</h1>
+
+
+
+    <button type="button" class="btn btn-light">
+      <span class="fa fa-plus"></span>
+      <a href="{% url 'paper_create'%}"> New Question Paper </a>
+    </button>
+
+
+
+    <table class="table table-striped table-bordered table-responsive">
+  <tr>
+    <th> Name </th>
+    <th> Created by </th>
+    <th> Created on </th>
+    <th> Last Modified </th>
+    <th> Subject </th>
+    <th> Level </th>
+    <th> Total Marks </th>
+    <th> Duration </th>
+    <th> Delete Paper </th>
+    <th> Edit Paper </th>
+    <th> Download </th>
+    <th> Preview </th>
+
+  </tr>
+
+
+
+
+{% for paper in paper_list_obj %}
+
+
+
+  <tr>
+    <td> {{ paper.name }} </td>
+    <td> {{ paper.user }} </td>
+    <td> {{ paper.timestamp }} </td>
+    <td> {{ paper.updated }} </td>
+    <td> {{ paper.subject }} </td>
+    <td> {{ paper.level }} </td>
+    <td> {{ paper.total_marks }} </td>
+    <td> {{ paper.duration }} </td>
+    <td> <button class="btn btn-dark"><a href="{% url 'paper_delete' paper.id %}"> Delete </a></button> </td>
+    <td> <button class="btn btn-dark"><a href="{% url 'paper_edit' paper.id %}"> Edit </a></button> </td>
+    <td><button class="btn btn-dark"><a href=""> Download </a></button></td>
+    <td><button class="btn btn-dark"><a href="{% url 'paper_detail' paper.id %}"> Detail </a></button></td>
+  </tr>
+
+
+{% empty %}
+    <tr>
+        <td colspan="13" class="text-center bg-warning">No Paper</td>
+    </tr>
+
+{% endfor %}
+
+
+</table>
+
+{% endblock content %}

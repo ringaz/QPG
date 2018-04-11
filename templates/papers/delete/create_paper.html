@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+
+
+    <div class="row">
+          <div class="col-sm-6">
+
+           <ul>
+               {% for question in question_list_obj %}
+
+
+        <li>{{ question | safe  }}</li>
+
+
+
+    {% endfor %}
+           </ul>
+
+          </div>
+
+
+
+
+          <div class="col-sm-6" id="list"></div>
+    </div>
+
+
+
+<script>
+
+$(document).ready(function () {
+
+    var qpaper = [];
+
+   $('li').click(function() {
+           var content =  $(this).html();
+           alert(content);
+            $('#list').append(content);
+   });
+
+});
+
+
+
+</script>
+
+
+
+
+
+
+{% endblock content %}

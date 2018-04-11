@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-5" id="questionbank">
+
+       <form method="get">
+    <div class="well">
+      <h4 style="margin-top: 0">Filter</h4>
+      <div class="row">
+        <div class="form-group col-md-3">
+          {{ question_filter.form.question.label_tag }}
+          {% render_field question_filter.form.question class="form-control form-control-sm" %}
+        </div>
+        <div class="form-group col-md-3">
+          {{ question_filter.form.subject.label_tag }}
+          {% render_field question_filter.form.subject class="form-control form-control-sm" %}
+        </div>
+        <div class="form-group col-md-3">
+          {{ question_filter.form.level.label_tag }}
+          {% render_field question_filter.form.level class="form-control form-control-sm" %}
+        </div>
+        <div class="form-group col-md-3">
+          {{ question_filter.form.chapter.label_tag }}
+          {% render_field question_filter.form.chapter class="form-control form-control-sm" %}
+        </div>
+      </div>
+
+        <div class="row">
+        <div class="form-group col-md-3">
+          {{ question_filter.form.marks.label_tag }}
+          {% render_field question_filter.form.marks class="form-control form-control-sm" %}
+        </div>
+        <div class="form-group col-md-3">
+          {{ question_filter.form.question_type.label_tag }}
+          {% render_field question_filter.form.question_type class="form-control form-control-sm" %}
+        </div>
+        <div class="form-group col-md-3">
+          {{ question_filter.form.difficulty.label_tag }}
+          {% render_field question_filter.form.difficulty class="form-control form-control-sm" %}
+        </div>
+        <div class="form-group col-md-3">
+          {{ question_filter.form.year_joined.label_tag }}
+          {% render_field question_filter.form.year_joined class="form-control form-control-sm" %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Search
+      </button>
+    </div>
+  </form>
+
+        <ul class="list-group qlist ">
+               {% for question in question_list_obj %}
+        <li class="list-group-item">{{ question | safe | truncatechars_html:200 }}</li>
+
+
+
+    {% endfor %}
+           </ul>
+
+    </div>
+
+    <div class="col-md-7" id="qpaper">
+
+        <hr>
+                    <!-- Instruction Buttons -->
+            <button type="button" class="btn btn-primary">PDF</button>
+            <button type="button" class="btn btn-dark">Email</button>
+            <button type="button" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-danger">Clear</button>
+            <button type="button" class="btn btn-info">Preview</button>
+
+        <hr>
+
+
+      <form method="post" id="paper_form" action="">
+            {% csrf_token %}
+            {{ paper_form.media }}
+            {{ paper_form.as_p }}
+            <p><input type="submit" value="post"></p>
+        </form>
+
+        <ul class="newlist"></ul>
+
+    </div>
+
+  </div>
+</div>
+
+
+    <!-- Modal -->
+
+
+
+<script>
+
+$(document).ready(function () {
+
+   $('.qlist li').click(function() {
+              var content = $(this).html(); //html contet
+       $('.newlist').append(
+
+               '<div class="content-area">' +
+
+                  '<div class="content-area-btn-group btn-group btn-group-xs " role="group" >' +
+                        '<button type="button" class="btn btn-outline-warning clone"> <span class="fa fa-clone "></span> </button>' +
+                        '<button type="button" class="btn btn-outline-danger remove"> <span class="fa fa-close "></span> </button>' +
+                        '<button type="button" class="btn btn-outline-success edit" data-toggle="modal" data-target="#myModal"> <span class="fa fa-pencil "></span> </button>' +
+                        '<button type="button" class="btn btn-outline-info move"> <span class="fa fa-arrows "></span> </button>' +
+                        '<button type="button" class="btn btn-outline-dark db_save"> <span class="fa fa-database " ></span> </button>' +
+                  '</div>' +
+
+                  '<li class = "item">' + content + '</li>' +
+        '</div>'
+
+
+       );
+
+          }); //close click .append
+
+     var array = {{ qpaper | safe }};
+       //var array = ["Saab", "Volvo", "BMW"];
+        console.log(array);
+
+         array.forEach(function(item) {
+        $('.newlist').append(
+
+                 '<div class="content-area">' +
+
+                  '<div class="content-area-btn-group btn-group btn-group-xs " role="group" >' +
+                        '<button type="button" class="btn btn-outline-warning clone"> <span class="fa fa-clone "></span> </button>' +
+                        '<button type="button" class="btn btn-outline-danger remove"> <span class="fa fa-close "></span> </button>' +
+                        '<button type="button" class="btn btn-outline-success edit" data-toggle="modal" data-target="#myModal"> <span class="fa fa-pencil "></span> </button>' +
+                        '<button type="button" class="btn btn-outline-info move"> <span class="fa fa-arrows "></span> </button>' +
+                        '<button type="button" class="btn btn-outline-dark db_save"> <span class="fa fa-database " ></span> </button>' +
+                  '</div>' +
+
+                  '<li class = "item">' + item + '</li>' +
+        '</div>'
+
+
+        );
+
+
+    }); // close array foreach function
+
+     //clone
+          $('.newlist').on("click",".clone",function() {
+            $(this).closest('.content-area').clone().appendTo( ".newlist" );
+          });
+
+
+           //remove
+         $('.newlist').on("click",".remove",function() {
+            $(this).closest('.content-area').remove();
+          });
+
+          //edit
+          $('.newlist').on("click",".edit",function() {
+
+            var editcontent = $(this).parent().next('.item').html();
+            CKEDITOR.replace('editor');
+            CKEDITOR.instances['editor'].setData(editcontent);
+
+
+            //$(this).parent().next(".item").html('<textarea name="message"  class = "editor" rows="10" cols="30">' + editcontent + '</textarea>' +
+               //             '<button class = "edit_save">Save</button>'
+              //);
+
+
+          });
+
+           //edit save
+         $('.edit_save').click(function() {
+                var  newcontent = $('.editor').val();
+                console.log(newcontent);
+                $('#myModal').modal('hide');
+               $(this).parent('.item').html(newcontent);
+            });
+
+
+
+
+          //Hover
+          $('.newlist').on("mouseenter", ".content-area", function(){
+             $(this).find('.content-area-btn-group').show();
+            $(this).css({"outline": "dotted"});
+          });
+
+          $('.newlist').on("mouseleave", ".content-area", function(){
+            $(this).css({"outline": "none"});
+            $(this).find('.content-area-btn-group').hide();
+            });
+
+
+       // Submit post on submit
+    $('#paper_form').on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!"); // sanity check
+
+        var array = [];
+var list = $(".newlist > .content-area >  li");
+
+
+
+for (i = 0; i < list.length; i++) {
+                array.push(list[i].innerHTML);
+            }
+console.log(array);
+
+  $('#id_paper').val(JSON.stringify(array));
+    var data = $('#paper_form').serialize();
+  console.log(data);
+
+         $.ajax({
+            url: '{% url 'ajax_edit' %}',
+            type: "POST",
+            //dataType: "json",
+            data: data,
+             success : function(data) {
+            $('#paper_form').val(''); // remove the value from the input
+            console.log(data); // another sanity check
+                        window.location.href = '{% url 'paper_list' %}'
+
+        }
+
+         });
+
+
+});
+
+
+
+});
+
+
+
+</script>
+
+{% endblock content %}

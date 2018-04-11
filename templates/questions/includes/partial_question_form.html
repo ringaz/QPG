@@ -1,0 +1,35 @@
+            {{ form.media }}
+            {{ form.as_p }}
+
+<script>
+
+$(document).ready(function () {
+
+    CKEDITOR.replace('question');
+    CKEDITOR.replace('answer');
+
+    $('#id_subject, #id_level, #id_chapter, #id_difficulty, #id_question_type').select2();
+
+    $("#id_subject, #id_level").change(function () {
+
+            var subjectid = $('#id_subject').val(); // get the selected country ID from the HT
+            var levelid = $('#id_level').val();
+            console.log(subjectid);
+            console.log(levelid);
+            $.ajax({ // initialize an AJAX request
+                    url: '{% url 'load_chapters' %}',
+                    data: {
+                    'subject': subjectid, // add the country id to the GET parameters
+                    'level': levelid
+                    },
+                    success: function (data) { // `data` is the return of the `load_cities
+                    $("#id_chapter").html(data); // replace the contents of the city input w
+                    }
+            });
+});
+
+});
+
+
+
+</script>

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+<h1>Questions List</h1>
+
+<div class="container>">
+     <div class="row">
+     <div class="col-sm-6">
+<ul>
+
+{% for questions in question_list_obj %}
+
+    <li class="item" q_id = '{{ questions.question }}' >{{ questions.question | safe | truncatechars_html:200}}</li>
+{% empty %}
+    <li>No articles yet.</li>
+
+{% endfor %}
+
+</ul>
+    </div>
+     <div id="list" class="col-sm-6">
+
+        <button>Save</button>
+
+    </div>
+    </div>
+    </div>
+
+    <script>
+
+     $(document).ready(function() {
+
+        var array = ["<button>My name </button>", "<p>My surname</p>", "<p>what ever</p>" ];
+
+       $('.item').click(function() {
+
+
+
+            var q_id = $(this).attr('q_id') ;
+           contents = $(this).html();
+        $('#list').append(contents + '<br />');
+            alert(contents);
+
+
+        array.push(q_id);
+        console.log(array);
+
+        $.ajax({
+            url: '{% url 'ajax_view' %}',
+
+            type: "POST",
+            dataType: "json",
+            data: {
+
+                    array: array
+                    },
+            success: function(data) {
+                 $('#list').append(data);
+                 alert(data)
+            }
+
+        }); // ajax end
+
+
+});
+return array;
+
+   });
+
+    </script>
+
+{% endblock content %}
+
+
+

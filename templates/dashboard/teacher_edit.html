@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Edit</title>
+</head>
+<body>
+
+
+     <form action="" method="post">
+    {% csrf_token %}
+    {{ user_edit_form }}
+    {{ teacher_form }}
+   <button type="submit">Sign in</button>
+   </form>
+
+</body>
+</html>

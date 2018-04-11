@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>Question Paper</h1>
+
+<ul>
+
+{% for question in q_paper %}
+
+       <ul class = "list">
+
+<div>
+<li> {{ question }} </li>
+<button class = "move">move</button>
+<button class = "clone">clone</button>
+<button class = "delete">delete</button>
+</div>
+    </ul>
+
+{% endfor %}
+
+
+
+
+ </ul>
+
+
+<ul id ="newul">
+
+</ul>
+
+
+
+     <script>
+
+   $(document).ready(function () {
+
+     $(".list").sortable();
+
+
+     $('.delete').click(function() {
+           $(this).closest('div').remove();
+      });
+
+     $('.clone').click(function() {
+           $(this).closest('div').clone().appendTo( "#newul" );
+      });
+
+
+
+
+     var pple = {{ q_paper }}
+     console.log(pple)
+
+
+
+    pple.forEach(function(item) {
+        var question = "<li>" + item + "<li>";
+        $('#newul').append(question);
+
+    });
+
+
+});
+
+  </script>
+
+
+{% endblock content %}
+

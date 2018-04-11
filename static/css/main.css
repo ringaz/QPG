@@ -1,0 +1,23 @@
+/***************************************
+   Question Content Area 
+************************************** */
+
+
+.content-area {
+    outline: none;
+    padding: 10px;
+    margin: 10px;
+}
+
+
+.content-area-btn-group {
+    float: left;
+    position: absolute;
+    display: none;
+
+}
+
+.img-circle {
+    height: 40px;
+    width: 40px;
+}

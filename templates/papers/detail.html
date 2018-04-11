@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<ul>
+
+
+    <li> {{ paper_detail_obj.name }} </li>
+    <li> {{ paper_detail_obj.user }} </li>
+    <li> {{ paper_detail_obj.timestamp }} </li>
+    <li> {{ paper_detail_obj.updated }} </li>
+    <li> {{ paper_detail_obj.subject }} </li>
+    <li> {{ paper_detail_obj.level }} </li>
+    <li> {{ paper_detail_obj.total_marks }} </li>
+    <li> {{ paper_detail_obj.duration }} </li>
+
+    <ul id="newlist"></ul>
+
+</ul>
+    <button><a href="{% url 'paper_edit' paper_detail_obj.id %}">Edit</a></button>
+    <button><a href="{% url 'paper_delete' paper_detail_obj.id %}">Delete</a></button>
+
+
+    <script>
+
+    $(document).ready(function () {
+
+       var array = {{ paper_detail_obj.paper | safe }};
+       //var array = ["Saab", "Volvo", "BMW"];
+        console.log(array);
+
+         array.forEach(function(item) {
+        $('#newlist').append('<li>' + item + '</li>');
+
+
+    });
+
+    });
+
+    </script>
+
+{% endblock content %}

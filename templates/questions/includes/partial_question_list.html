@@ -1,0 +1,24 @@
+
+{% for question in question_list_obj %}
+  <tr>
+
+
+    <td>{{ question.question |safe | truncatechars_html:200 }}</td>
+    <td style="width: 150px">
+      <button type="button"
+              class="btn btn-warning btn-sm js-update-question"
+              data-url="{% url 'question_update' question.id %}">
+        <span class="fa fa-pencil"></span> Edit
+      </button>
+      <button type="button"
+              class="btn btn-danger btn-sm js-delete-question"
+              data-url="{% url 'question_delete' question.id %}">
+        <span class="fa fa-trash"></span> Delete
+      </button>
+    </td>
+  </tr>
+{% empty %}
+  <tr>
+    <td colspan="8" class="text-center bg-warning">No Questions</td>
+  </tr>
+{% endfor %}
